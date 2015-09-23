@@ -1,21 +1,9 @@
 defmodule OrderedList do
 
   def insert_at(list, element, new_position) do
-    if valid_position?(list,element,new_position) do
-      { reorder, ordered } = Enum.partition(list, &(&1.position in element.position..new_position))
-      reorder = Enum.filter(reorder, &(&1.position != element.position))
-
-      reorder = 
-        case element.position > new_position do 
-          true -> increment_positions(reorder)
-          false -> decrement_positions(reorder)
-        end
-
-      element = Map.put(element, :position, new_position)
-
-      Enum.sort_by(reorder ++ ordered ++ [element], &(&1.position))
-    else
-      list
+    case valid_new_position?(list,element,new_position) do
+      true -> reorder_list(list, element, new_position)
+      false -> list  
     end    
   end
 
@@ -37,7 +25,22 @@ defmodule OrderedList do
 
   #private
 
-  defp valid_position?(list, element, new_position) do
+  defp reorder_list(list,element,new_position) do
+    { reorder, ordered } = Enum.partition(list, &(&1.position in element.position..new_position))
+    reorder = Enum.filter(reorder, &(&1.position != element.position))
+
+    reorder = 
+      case element.position > new_position do 
+        true -> increment_positions(reorder)
+        false -> decrement_positions(reorder)
+      end
+
+    element = Map.put(element, :position, new_position)
+
+    Enum.sort_by(reorder ++ ordered ++ [element], &(&1.position))
+  end
+
+  defp valid_new_position?(list, element, new_position) do
     element.position != new_position && 
     !(first?(list, element) && new_position < 1) &&
     !(last?(list, element) && new_position > element.position)
