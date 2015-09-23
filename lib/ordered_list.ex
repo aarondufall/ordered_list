@@ -2,8 +2,8 @@ defmodule OrderedList do
 
   def insert_at(list, element, new_position) do
     case valid_new_position?(list,element,new_position) do
-      true -> reorder_list(list, element, new_position)
-      false -> list  
+      true ->  reorder_list(list, element, new_position)
+      false -> { list, [] }  
     end    
   end
 
@@ -35,9 +35,9 @@ defmodule OrderedList do
         false -> decrement_positions(reorder)
       end
 
-    element = Map.put(element, :position, new_position)
-
-    Enum.sort_by(reorder ++ ordered ++ [element], &(&1.position))
+    element = { element, %{ position: new_position } }
+    
+    {ordered, Enum.sort_by(reorder ++ [element], &(elem(&1, 0).position))}
   end
 
   defp valid_new_position?(list, element, new_position) do
@@ -47,19 +47,19 @@ defmodule OrderedList do
   end
 
   defp increment_positions(list) do
-    Enum.map(list, fn(list_item) -> move_down(list_item) end)
+    Enum.map(list, fn(list_item) -> { list_item, %{ position: list_item.position + 1 } } end)
   end
 
   defp decrement_positions(list) do
-    Enum.map(list, fn(list_item) -> move_up(list_item) end)
+    Enum.map(list, fn(list_item) -> { list_item, %{ position: list_item.position - 1 } } end)
   end
 
-  defp move_down(list_item) do
-    Map.put(list_item, :position, list_item.position + 1)
-  end
+  # defp move_down(list_item) do
+  #   Map.put(list_item, :position, list_item.position + 1)
+  # end
 
-  defp move_up(list_item) do
-    Map.put(list_item, :position, list_item.position - 1)
-  end
+  # defp move_up(list_item) do
+  #   Map.put(list_item, :position, list_item.position - 1)
+  # end
 
 end
