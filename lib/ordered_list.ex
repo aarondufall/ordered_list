@@ -23,6 +23,15 @@ defmodule OrderedList do
     Enum.max_by(list, &(&1.position)).position == element.position
   end
 
+  def remove_from_list(list, element) do
+    { delete, keep } = Enum.partition(list, &(&1.position == element.position))
+    { reorder, keep} = Enum.partition(keep, &(&1.position > element.position))
+
+    reorder = decrement_positions(reorder)
+
+    { List.first(delete), {keep,reorder} }
+  end
+
   #private
 
   defp reorder_list(list,element,new_position) do
@@ -53,13 +62,5 @@ defmodule OrderedList do
   defp decrement_positions(list) do
     Enum.map(list, fn(list_item) -> { list_item, %{ position: list_item.position - 1 } } end)
   end
-
-  # defp move_down(list_item) do
-  #   Map.put(list_item, :position, list_item.position + 1)
-  # end
-
-  # defp move_up(list_item) do
-  #   Map.put(list_item, :position, list_item.position - 1)
-  # end
 
 end
