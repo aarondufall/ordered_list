@@ -37,22 +37,30 @@ defmodule OrderedList do
     """
 
   @doc ~S"""
-    Retuns a `Tuple` of two elements, the first being a `List` of maps that don't need there position updated.
-    The second is a `List` of tuples with the first element being the orginal `Map` and second being a `Map` 
-    with new `:position`. 
+  Retuns a `Tuple` of two elements, the first being a `List` of maps that don't need there position updated.
+  The second is a `List` of tuples with the first element being the orginal `Map` and second being a `Map` 
+  with new `:position`. 
 
-        iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
-        iex> OrderedList.insert_at(original_list,%{id: 4, position: 4}, 2)
-        {  
-          #Unchanged
-          [%{id: 1, position: 1}, %{id: 5, position: 5}],
-          #Changed
-          [
-            {%{id: 2, position: 2}, %{ position: 3 }}, 
-            {%{id: 3, position: 3}, %{ position: 4 }}, 
-            {%{id: 4, position: 4}, %{ position: 2 }}
-          ]
-        }
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key.
+
+    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument
+
+    * `new_position` - An `Integer` of position that the `orginal_element` is moving to.
+
+
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
+      iex> OrderedList.insert_at(original_list,%{id: 4, position: 4}, 2)
+      {  
+        #Unchanged
+        [%{id: 1, position: 1}, %{id: 5, position: 5}],
+        #Changed
+        [
+          {%{id: 2, position: 2}, %{ position: 3 }}, 
+          {%{id: 3, position: 3}, %{ position: 4 }}, 
+          {%{id: 4, position: 4}, %{ position: 2 }}
+        ]
+      }
+
   """
 
   def insert_at(list, orginal_element, new_position) do
