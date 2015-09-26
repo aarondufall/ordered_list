@@ -15,13 +15,11 @@ defmodule OrderedList do
     insert_at(list,element, element.position - 1)
   end
 
-  def first?(_, element) do
-    element.position == 1
+  def move_to_bottom(list, element) do
+    max = Enum.max_by(list, &(&1.position))
+    insert_at(list, element, max.position)
   end
 
-  def last?(list, element) do
-    Enum.max_by(list, &(&1.position)).position == element.position
-  end
 
   def remove_from_list(list, element) do
     { delete, keep } = Enum.partition(list, &(&1.position == element.position))
@@ -32,6 +30,13 @@ defmodule OrderedList do
     { List.first(delete), {keep,reorder} }
   end
 
+  def first?(_, element) do
+    element.position == 1
+  end
+
+  def last?(list, element) do
+    Enum.max_by(list, &(&1.position)).position == element.position
+  end
   #private
 
   defp reorder_list(list,element,new_position) do

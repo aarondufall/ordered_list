@@ -150,9 +150,9 @@ defmodule OrderedListTest do
 
   end
 
-  #first?/2
+  # move_to_bottom/2
 
-  test "first?/2" do
+  test "move_to_bottom/2" do
     start_list = [
       %{id: 1, position: 1}, 
       %{id: 2, position: 2}, 
@@ -160,28 +160,50 @@ defmodule OrderedListTest do
       %{id: 4, position: 4},
       %{id: 5, position: 5}
     ]
-    assert OrderedList.first?(start_list, %{id: 1, position: 1}) == true
-    refute OrderedList.first?(start_list, %{id: 2, position: 2}) == true
-    refute OrderedList.first?(start_list, %{id: 3, position: 3}) == true
-    refute OrderedList.first?(start_list, %{id: 4, position: 4}) == true
-    refute OrderedList.first?(start_list, %{id: 5, position: 5}) == true
-  end
+    #Top
+    assert OrderedList.move_to_bottom(start_list, %{id: 1, position: 1}) ==
+      {
+        #Unchanged
+        [],
+        #Changed    
+        [
+          {%{id: 1, position: 1}, %{position: 5}}, 
+          {%{id: 2, position: 2}, %{position: 1}}, 
+          {%{id: 3, position: 3}, %{position: 2}}, 
+          {%{id: 4, position: 4}, %{position: 3}},
+          {%{id: 5, position: 5}, %{position: 4}}
+        ]
+      }
 
-  #last?/2
+    #Middle
+     assert OrderedList.move_to_bottom(start_list, %{id: 3, position: 3}) ==
+      {
+        #Unchanged
+        [ %{id: 1, position: 1}, %{id: 2, position: 2}],
+        #Changed    
+        [
+          {%{id: 3, position: 3}, %{position: 5}}, 
+          {%{id: 4, position: 4}, %{position: 3}},
+          {%{id: 5, position: 5}, %{position: 4}}
+        ]
+      }
 
-  test "last?/2" do
-    start_list = [
-      %{id: 1, position: 1}, 
-      %{id: 2, position: 2}, 
-      %{id: 3, position: 3}, 
-      %{id: 4, position: 4},
-      %{id: 5, position: 5}
-    ]
-    refute OrderedList.last?(start_list, %{id: 1, position: 1}) == true
-    refute OrderedList.last?(start_list, %{id: 2, position: 2}) == true
-    refute OrderedList.last?(start_list, %{id: 3, position: 3}) == true
-    refute OrderedList.last?(start_list, %{id: 4, position: 4}) == true
-    assert OrderedList.last?(start_list, %{id: 5, position: 5}) == true
+    #Bottom
+
+    assert OrderedList.move_to_bottom(start_list, %{id: 5, position: 5}) ==
+      {
+        #Unchanged
+        [
+          %{id: 1, position: 1}, 
+          %{id: 2, position: 2}, 
+          %{id: 3, position: 3}, 
+          %{id: 4, position: 4}, 
+          %{id: 5, position: 5}
+        ],
+        #Change 
+        []
+      }
+
   end
 
   test "remove_from_list/2" do
@@ -229,6 +251,7 @@ defmodule OrderedListTest do
       }
 
     # Bottom
+
     assert OrderedList.remove_from_list(start_list, %{id: 5, position: 5}) == 
       {
         #Remove
@@ -246,6 +269,40 @@ defmodule OrderedListTest do
           []    
         }
       }
+  end
+
+  #first?/2
+
+  test "first?/2" do
+    start_list = [
+      %{id: 1, position: 1}, 
+      %{id: 2, position: 2}, 
+      %{id: 3, position: 3}, 
+      %{id: 4, position: 4},
+      %{id: 5, position: 5}
+    ]
+    assert OrderedList.first?(start_list, %{id: 1, position: 1}) == true
+    refute OrderedList.first?(start_list, %{id: 2, position: 2}) == true
+    refute OrderedList.first?(start_list, %{id: 3, position: 3}) == true
+    refute OrderedList.first?(start_list, %{id: 4, position: 4}) == true
+    refute OrderedList.first?(start_list, %{id: 5, position: 5}) == true
+  end
+
+  #last?/2
+
+  test "last?/2" do
+    start_list = [
+      %{id: 1, position: 1}, 
+      %{id: 2, position: 2}, 
+      %{id: 3, position: 3}, 
+      %{id: 4, position: 4},
+      %{id: 5, position: 5}
+    ]
+    refute OrderedList.last?(start_list, %{id: 1, position: 1}) == true
+    refute OrderedList.last?(start_list, %{id: 2, position: 2}) == true
+    refute OrderedList.last?(start_list, %{id: 3, position: 3}) == true
+    refute OrderedList.last?(start_list, %{id: 4, position: 4}) == true
+    assert OrderedList.last?(start_list, %{id: 5, position: 5}) == true
   end
 
 end
