@@ -215,9 +215,9 @@ defmodule OrderedList do
 
   """
 
-  def remove_from_list(list, element) do
-    { delete, keep } = Enum.partition(list, &(&1.position == element.position))
-    { reorder, keep} = Enum.partition(keep, &(&1.position > element.position))
+  def remove_from_list(list, original_element) do
+    { delete, keep } = Enum.partition(list, &(&1.position == original_element.position))
+    { reorder, keep} = Enum.partition(keep, &(&1.position > original_element.position))
 
     reorder = decrement_positions(reorder)
 
@@ -239,12 +239,28 @@ defmodule OrderedList do
       false
 
   """  
-  def first?(_list, element) do
-    element.position == 1
+  def first?(_list, original_element) do
+    original_element.position == 1
   end
 
-  def last?(list, element) do
-    Enum.max_by(list, &(&1.position)).position == element.position
+
+  @doc ~S"""
+  Returns a `boolean` value if the element is in the last `:position` in the list.
+
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
+
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+
+      
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
+      iex> OrderedList.last?(original_list, %{id: 5, position: 5})
+      true
+      iex> OrderedList.last?(original_list, %{id: 4, position: 4})
+      false
+
+  """ 
+  def last?(list, original_element) do
+    Enum.max_by(list, &(&1.position)).position == original_element.position
   end
 
   #private
