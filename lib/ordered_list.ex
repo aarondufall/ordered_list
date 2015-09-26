@@ -224,7 +224,22 @@ defmodule OrderedList do
     { List.first(delete), {keep,reorder} }
   end
 
-  def first?(_, element) do
+  @doc ~S"""
+  Returns a `boolean` value if the element is in the first `:position` in the list.
+
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
+
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+
+      
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
+      iex> OrderedList.first?(original_list, %{id: 1, position: 1})
+      true
+      iex> OrderedList.first?(original_list, %{id: 2, position: 2})
+      false
+
+  """  
+  def first?(_list, element) do
     element.position == 1
   end
 
