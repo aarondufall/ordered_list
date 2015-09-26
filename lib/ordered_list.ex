@@ -20,6 +20,11 @@ defmodule OrderedList do
     insert_at(list, element, max.position)
   end
 
+  def move_to_top(list, element) do
+    min = Enum.min_by(list, &(&1.position))
+    insert_at(list, element, min.position)
+  end
+
 
   def remove_from_list(list, element) do
     { delete, keep } = Enum.partition(list, &(&1.position == element.position))

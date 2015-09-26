@@ -206,6 +206,63 @@ defmodule OrderedListTest do
 
   end
 
+  # move_to_top/2
+
+  test "move_to_top/2" do
+    start_list = [
+      %{id: 1, position: 1}, 
+      %{id: 2, position: 2}, 
+      %{id: 3, position: 3}, 
+      %{id: 4, position: 4},
+      %{id: 5, position: 5}
+    ]
+    #Top
+    assert OrderedList.move_to_top(start_list, %{id: 1, position: 1}) ==
+      {
+        #Unchanged
+        [
+          %{id: 1, position: 1}, 
+          %{id: 2, position: 2}, 
+          %{id: 3, position: 3}, 
+          %{id: 4, position: 4}, 
+          %{id: 5, position: 5}
+        ],
+        #Change 
+        []
+      }
+
+
+    #Middle
+     assert OrderedList.move_to_top(start_list, %{id: 3, position: 3}) ==
+      {
+        #Unchanged
+        [%{id: 4, position: 4}, %{id: 5, position: 5}], 
+        #Changed
+        [
+          {%{id: 1, position: 1}, %{position: 2}},
+          {%{id: 2, position: 2}, %{position: 3}}, 
+          {%{id: 3, position: 3}, %{position: 1}}
+        ]
+      }
+
+    #Bottom
+
+    assert OrderedList.move_to_top(start_list, %{id: 5, position: 5}) ==
+      {
+        #Unchanged
+        [],
+        #Changed    
+        [
+          {%{id: 1, position: 1}, %{position: 2}}, 
+          {%{id: 2, position: 2}, %{position: 3}}, 
+          {%{id: 3, position: 3}, %{position: 4}}, 
+          {%{id: 4, position: 4}, %{position: 5}},
+          {%{id: 5, position: 5}, %{position: 1}}
+        ]
+      }
+
+  end
+
   test "remove_from_list/2" do
     start_list = [
       %{id: 1, position: 1}, 
