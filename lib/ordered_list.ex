@@ -186,6 +186,34 @@ defmodule OrderedList do
     insert_at(list, original_element, min.position)
   end
 
+  @doc ~S"""
+  
+  Returns a `Tuple` that contain two elements, the first being the item to be 
+  removed and the second a `Tuple` containing the changes to positions that 
+  have been effected by the removal of the element.
+
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
+
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+
+      
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
+      iex> OrderedList.remove_from_list(original_list, %{id: 3, position: 3})
+      {
+        #Remove
+        %{id: 3, position: 3},
+        {
+          #Unchanged
+          [%{id: 1, position: 1}, %{id: 2, position: 2}],
+          #Changed    
+          [   
+            {%{id: 4, position: 4}, %{position: 3}},
+            {%{id: 5, position: 5}, %{position: 4}}
+          ]
+        }
+      }
+
+  """
 
   def remove_from_list(list, element) do
     { delete, keep } = Enum.partition(list, &(&1.position == element.position))
