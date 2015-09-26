@@ -18,7 +18,7 @@ defmodule OrderedList do
 
   The return value is a `Tuple` where the first element is a list of maps that haven't had 
   their position changed. The second element is a `List` of tuples where the first element is 
-  the orginal `Map` and the second is params for the new position. The idea being that you would 
+  the original `Map` and the second is params for the new position. The idea being that you would 
   be able to pass each `Map` in the second list to create changesets with `Ecto`.
 
 
@@ -38,14 +38,14 @@ defmodule OrderedList do
 
   @doc ~S"""
   Retuns a `Tuple` of two elements, the first being a `List` of maps that don't need there position updated.
-  The second is a `List` of tuples with the first element being the orginal `Map` and second being a `Map` 
+  The second is a `List` of tuples with the first element being the original `Map` and second being a `Map` 
   with new `:position`. 
 
     * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key.
 
-    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument
 
-    * `new_position` - An `Integer` of position that the `orginal_element` is moving to.
+    * `new_position` - An `Integer` of position that the `original_element` is moving to.
 
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
@@ -76,7 +76,7 @@ defmodule OrderedList do
 
     * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
 
-    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
@@ -105,7 +105,7 @@ defmodule OrderedList do
 
     * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
 
-    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
@@ -129,7 +129,7 @@ defmodule OrderedList do
   
     * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
 
-    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
       
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
@@ -155,9 +155,35 @@ defmodule OrderedList do
     insert_at(list, original_element, max.position)
   end
 
-  def move_to_top(list, element) do
+  @doc ~S"""
+  Moves the `original_element` to the top of the list.
+  
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
+
+    * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+
+      
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
+      iex> OrderedList.move_to_top(original_list, %{id: 5, position: 5})
+      {
+        #Unchanged
+        [],
+        #Changed    
+        [
+          {%{id: 1, position: 1}, %{position: 2}}, 
+          {%{id: 2, position: 2}, %{position: 3}}, 
+          {%{id: 3, position: 3}, %{position: 4}}, 
+          {%{id: 4, position: 4}, %{position: 5}},
+          {%{id: 5, position: 5}, %{position: 1}}
+        ]
+      }
+
+    The position number will remain unchanged if it is already in the highest position.
+  """
+
+  def move_to_top(list, original_element) do
     min = Enum.min_by(list, &(&1.position))
-    insert_at(list, element, min.position)
+    insert_at(list, original_element, min.position)
   end
 
 
