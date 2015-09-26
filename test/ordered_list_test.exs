@@ -1,5 +1,6 @@
 defmodule OrderedListTest do
   use ExUnit.Case
+  doctest OrderedList
 
   #insert_at/3
 

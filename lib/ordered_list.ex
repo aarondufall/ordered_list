@@ -1,4 +1,40 @@
 defmodule OrderedList do
+    @moduledoc ~S"""
+    Provides a set of algorithms for sorting and reordering the position number of maps in a list.
+    All of the functions expect a `List` where each element is a `Map` with a `:postion` key.
+
+        iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
+        iex> OrderedList.insert_at(original_list,%{id: 4, position: 4}, 2)
+        {  
+          #Unchanged
+          [%{id: 1, position: 1}, %{id: 5, position: 5}],
+          #Changed
+          [
+            {%{id: 2, position: 2}, %{ position: 3 }}, 
+            {%{id: 3, position: 3}, %{ position: 4 }}, 
+            {%{id: 4, position: 4}, %{ position: 2 }}
+          ]
+        }
+
+    The return value is a `Tuple` where the first element is a list of maps that haven't had 
+    their position changed. The second element is a `List` of tuples where the first element is 
+    the orginal `Map` and the second is params for the new position. The idea being that you would 
+    be able to pass each `Map` in the second list to create changesets with `Ecto`.
+
+
+        post = MyRepo.get!(Post, 42)
+        posts = MyRepo.all(Post)
+        { same_positions, new_positions } = OrderedList.insert_at(posts, post, 3)
+
+        Repo.transaction fn ->
+          Enum.each new_positions, fn (post) ->
+            case MyRepo.update post do
+              {:ok, model}        -> # Updated with success
+              {:error, changeset} -> # Something went wrong
+            end
+          end
+        end
+    """
 
   def insert_at(list, element, new_position) do
     case valid_new_position?(list,element,new_position) do
