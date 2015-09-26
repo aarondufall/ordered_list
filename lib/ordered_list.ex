@@ -99,6 +99,27 @@ defmodule OrderedList do
     insert_at(list,original_element, original_element.position + 1)
   end
 
+  @doc ~S"""
+  Moves the element one position up the list. Higher up the list means that the position
+  number will be lower.
+
+    * `list` - A `List` where each element is a `Map` or `Struct` that contains a `:position` key. 
+
+    * `orginal_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
+
+
+      iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
+      iex> OrderedList.move_higher(original_list, %{id: 5, position: 5})
+      {
+        #Unchanged
+        [%{id: 1, position: 1}, %{id: 2, position: 2}, %{id: 3, position: 3}], 
+        #Changed
+        [{%{id: 4, position: 4}, %{position: 5}}, {%{id: 5, position: 5}, %{position: 4}}]
+      }
+
+  The position number will remain unchanged if it is already in the highest position.
+
+  """
   def move_higher(list, element) do
     insert_at(list,element, element.position - 1)
   end
