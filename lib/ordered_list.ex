@@ -36,9 +36,28 @@ defmodule OrderedList do
         end
     """
 
-  def insert_at(list, element, new_position) do
-    case valid_new_position?(list,element,new_position) do
-      true ->  reorder_list(list, element, new_position)
+  @doc ~S"""
+    Retuns a `Tuple` of two elements, the first being a `List` of maps that don't need there position updated.
+    The second is a `List` of tuples with the first element being the orginal `Map` and second being a `Map` 
+    with new `:position`. 
+
+        iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
+        iex> OrderedList.insert_at(original_list,%{id: 4, position: 4}, 2)
+        {  
+          #Unchanged
+          [%{id: 1, position: 1}, %{id: 5, position: 5}],
+          #Changed
+          [
+            {%{id: 2, position: 2}, %{ position: 3 }}, 
+            {%{id: 3, position: 3}, %{ position: 4 }}, 
+            {%{id: 4, position: 4}, %{ position: 2 }}
+          ]
+        }
+  """
+
+  def insert_at(list, orginal_element, new_position) do
+    case valid_new_position?(list,orginal_element,new_position) do
+      true ->  reorder_list(list, orginal_element, new_position)
       false -> { list, [] }  
     end    
   end
@@ -78,6 +97,7 @@ defmodule OrderedList do
   def last?(list, element) do
     Enum.max_by(list, &(&1.position)).position == element.position
   end
+
   #private
 
   defp reorder_list(list,element,new_position) do
