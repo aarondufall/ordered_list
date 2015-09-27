@@ -26,8 +26,12 @@ defmodule OrderedList do
       posts = MyRepo.all(Post)
       { same_positions, new_positions } = OrderedList.insert_at(posts, post, 3)
 
+      changesets =  Enum.map new_positions, fn ({orginal, params}) ->
+        Post.changeset(orginal, params)
+      end
+
       Repo.transaction fn ->
-        Enum.each new_positions, fn (post) ->
+        Enum.each changesets, fn (post) ->
           case MyRepo.update post do
             {:ok, model}        -> # Updated with success
             {:error, changeset} -> # Something went wrong
