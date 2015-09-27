@@ -30,7 +30,12 @@ defmodule OrderedList.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:inch_ex, only: :docs}]
+    [
+      # Docs dependencie
+      {:earmark, "~> 0.1", only: :docs},
+      {:ex_doc, "~> 0.10", only: :docs},
+      {:inch_ex, only: :docs}
+    ]
   end
 
   defp description do
