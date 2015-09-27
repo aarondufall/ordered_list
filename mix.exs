@@ -40,7 +40,7 @@ defmodule OrderedList.Mixfile do
   end
 
   defp package do
-    [contributors: ["Aaron Dufall"],
+    [maintainers: ["Aaron Dufall"],
      licenses: ["MIT"],
      links: %{github: "https://github.com/aarondufall/ordered_list"},
      files: ~w(mix.exs README.md LICENSE lib)]
