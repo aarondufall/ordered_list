@@ -52,6 +52,8 @@ defmodule OrderedList do
     * `new_position` - An `Integer` of position that the `original_element` is moving to.
 
 
+  Example:
+
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}] 
       iex> OrderedList.insert_at(original_list,%{id: 4, position: 4}, 2)
       {  
@@ -235,7 +237,7 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
-      
+
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.first?(original_list, %{id: 1, position: 1})
       true
