@@ -84,6 +84,7 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
+  Example:
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.move_lower(original_list, %{id: 1, position: 1})
@@ -113,6 +114,7 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
+  Example:
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.move_higher(original_list, %{id: 5, position: 5})
@@ -137,7 +139,8 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
-      
+  Example:
+
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.move_to_bottom(original_list, %{id: 1, position: 1})
       {
@@ -168,7 +171,8 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
-      
+  Example: 
+
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.move_to_top(original_list, %{id: 5, position: 5})
       {
@@ -202,7 +206,8 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
-      
+  Example:
+
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.remove_from_list(original_list, %{id: 3, position: 3})
       {
@@ -237,6 +242,7 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
+  Example:
 
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.first?(original_list, %{id: 1, position: 1})
@@ -257,6 +263,7 @@ defmodule OrderedList do
 
     * `original_element` - A `Map` or `Struct` that is contained within the `list` in the first argument 
 
+  Example:
       
       iex> original_list = [%{id: 1, position: 1},%{id: 2, position: 2}, %{id: 3, position: 3},%{id: 4, position: 4},%{id: 5, position: 5}]
       iex> OrderedList.last?(original_list, %{id: 5, position: 5})
