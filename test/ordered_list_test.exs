@@ -55,6 +55,23 @@ defmodule OrderedListTest do
           {%{id: 5, position: 5}, %{position: 4}}
         ]
       }
+
+    # Middle to top
+    assert OrderedList.insert_at(start_list,%{id: 3, position: 3}, 1) == 
+      {
+        #Unchanged
+        [ 
+          %{id: 4, position: 4}, 
+          %{id: 5, position: 5}
+        ],
+        #Change 
+        [
+          {%{id: 1, position: 1}, %{position: 2}},
+          {%{id: 2, position: 2}, %{position: 3}},
+          {%{id: 3, position: 3}, %{position: 1}}
+        ]
+      }
+
   end
 
   # #move_lower/2
